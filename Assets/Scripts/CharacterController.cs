@@ -5,56 +5,66 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     Rigidbody2D body;
+    Animator animator;
 
     float horizontal;
     float vertical;
-    float moveLimiter = 0.7f;
+   
 
     public float runSpeed = 5f;
 
     // Array de estados
-    private string[] elementos = { "Fuego", "Hielo", "Arcano", "Luz" };
+    private string[] elementos = { "Rojo", "Azul", "Morado", "Luz" };
     private int elementoActual = 0;
 
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        // Cambiar estado al presionar una tecla
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             CambiarEstado();
         }
 
-        // Gives a value between -1 and 1
-        horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
-        vertical = Input.GetAxisRaw("Vertical"); // -1 is down
+      
+        horizontal = Input.GetAxisRaw("Horizontal"); 
+        vertical = Input.GetAxisRaw("Vertical"); 
 
         if (horizontal != 0 && vertical != 0)
         {
             horizontal *= 0;
             vertical *= 0;
+            
         }
+
+        if (body.velocity.magnitude == 0)
+        {
+            animator.SetBool("Walking", false);
+        }
+        else
+        {
+            animator.SetBool("Walking", true);
+        }
+
+        animator.SetFloat("X Direction", horizontal);
+        animator.SetFloat("Y Direction", vertical);
 
     }
 
     private void FixedUpdate()
     {
-        if (horizontal != 0 && vertical != 0) // Check for diagonal movement
-        {
-            // limit movement speed diagonally, so you move at 70% speed
-            horizontal *= moveLimiter;
-            vertical *= moveLimiter;
-        }
+        
 
         body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
 
     }
 
-    // Función para cambiar el estado del personaje
+    // Funciï¿½n para cambiar el estado del personaje
     void CambiarEstado()
     {
         elementoActual++;
