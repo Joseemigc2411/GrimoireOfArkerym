@@ -14,7 +14,7 @@ public class CharacterController : MonoBehaviour
     public float runSpeed = 5f;
 
     // Array de estados
-    private string[] elementos = { "Rojo", "Azul", "Morado", "Luz" };
+    private string[] elementos = { "RedLayer", "LightLayer", "PurpleLayer", "BlueLayer" };
     private int elementoActual = 0;
 
     void Start()
@@ -32,20 +32,20 @@ public class CharacterController : MonoBehaviour
         }
 
       
-        horizontal = Input.GetAxisRaw("Horizontal"); 
-        vertical = Input.GetAxisRaw("Vertical"); 
+        horizontal = Input.GetAxisRaw("Horizontal"); //Movimiento en el eje x
+        vertical = Input.GetAxisRaw("Vertical"); // Movimiento en el eje y
 
-        if (horizontal != 0 && vertical != 0)
+        if (horizontal != 0 && vertical != 0) 
         {
             horizontal *= 0;
             vertical *= 0;
             
-        }
+        } // Impide el movimiento diagonal
 
         if (body.velocity.magnitude == 0)
         {
             animator.SetBool("Walking", false);
-        }
+        } // Módulo de comunicación con el animator
         else
         {
             animator.SetBool("Walking", true);
@@ -60,7 +60,7 @@ public class CharacterController : MonoBehaviour
     {
         
 
-        body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
+        body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed).normalized;
 
     }
 
@@ -73,5 +73,6 @@ public class CharacterController : MonoBehaviour
             elementoActual = 0;
         }
         Debug.Log("Estado actual: " + elementos[elementoActual]);
+        
     }
 }
