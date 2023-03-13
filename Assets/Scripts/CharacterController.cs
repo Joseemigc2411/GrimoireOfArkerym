@@ -64,10 +64,11 @@ public class CharacterController : MonoBehaviour
 
     }
 
-    // Funci�n para cambiar el estado del personaje
+    // Funcion para cambiar el estado del personaje
     void CambiarEstado()
     {
         elementoActual++;
+        animator.SetLayerWeight(1,1);
         if (elementoActual >= elementos.Length)
         {
             elementoActual = 0;
