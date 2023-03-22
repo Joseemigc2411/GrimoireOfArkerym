@@ -21,6 +21,7 @@ public class CharacterController : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        
     }
 
     void Update()
@@ -42,10 +43,11 @@ public class CharacterController : MonoBehaviour
             
         } // Impide el movimiento diagonal
 
+        // Módulo de comunicación con el animator
         if (body.velocity.magnitude == 0)
         {
             animator.SetBool("Walking", false);
-        } // Módulo de comunicación con el animator
+        } 
         else
         {
             animator.SetBool("Walking", true);
@@ -58,22 +60,28 @@ public class CharacterController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
-
         body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed).normalized;
-
     }
 
     // Funcion para cambiar el estado del personaje
     void CambiarEstado()
     {
-        elementoActual++;
-        animator.SetLayerWeight(1,1);
-        if (elementoActual >= elementos.Length)
-        {
+        if (elementoActual == elementos.Length - 1)
+        {       
             elementoActual = 0;
+            animator.SetLayerWeight(elementoActual + 4, 0);
         }
+        else
+        {
+            elementoActual++; animator.SetLayerWeight(elementoActual - 1, 0);
+        }
+
+       
+        animator.SetLayerWeight(elementoActual, 1);
         Debug.Log("Estado actual: " + elementos[elementoActual]);
+        Debug.Log(elementoActual);
         
     }
+
+
 }
