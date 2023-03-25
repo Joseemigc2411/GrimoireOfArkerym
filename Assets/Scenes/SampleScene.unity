@@ -521,3 +521,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 3
+  cooldownState: 0.5

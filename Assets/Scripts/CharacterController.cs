@@ -12,6 +12,9 @@ public class CharacterController : MonoBehaviour
    
 
     public float runSpeed = 5f;
+    public float cooldownState = 0.2f; //Cooldown de cambio de estado
+
+    bool swapReady;
 
     // Array de estados
     private string[] elementos = { "RedLayer", "LightLayer", "PurpleLayer", "BlueLayer" };
@@ -21,15 +24,17 @@ public class CharacterController : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        swapReady = true;
         
     }
 
     void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && swapReady)
         {
             CambiarEstado();
+            StartCoroutine(StateChange());
         }
 
       
@@ -58,18 +63,20 @@ public class CharacterController : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
+    private void FixedUpdate() // El movimiento del pj se actualiza en un Fixed, que le da más estabilidad
     {
         body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed).normalized;
     }
 
-    // Funcion para cambiar el estado del personaje
-    void CambiarEstado()
+    #region Cambio de Estado
+
+    void CambiarEstado() // Función para cambiar el estado del personaje 
     {
-        if (elementoActual == elementos.Length - 1)
+
+        if (elementoActual == elementos.Length - 1) // Esta condición es la que permite volver al color rojo cuando se ha recorrido el array completo
         {       
             elementoActual = 0;
-            animator.SetLayerWeight(elementoActual + 4, 0);
+            animator.SetLayerWeight(elementoActual + 3, 0);
         }
         else
         {
@@ -78,10 +85,19 @@ public class CharacterController : MonoBehaviour
 
        
         animator.SetLayerWeight(elementoActual, 1);
-        Debug.Log("Estado actual: " + elementos[elementoActual]);
-        Debug.Log(elementoActual);
-        
+        swapReady = false;
+        // Debug.Log("Estado actual: " + elementos[elementoActual]);
+        // Debug.Log(elementoActual);
+
+    }   
+
+    
+    IEnumerator StateChange() //Corrutina de cooldown para que no se pueda spammear el cambio de estado.
+    {
+        yield return new WaitForSeconds(cooldownState);
+        // Debug.Log("Ready");
+        swapReady = true;
     }
 
-
+    #endregion
 }
