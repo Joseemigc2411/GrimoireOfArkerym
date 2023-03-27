@@ -15,6 +15,7 @@ public class CharacterController : MonoBehaviour
     public float cooldownState = 0.2f; //Cooldown de cambio de estado
 
     bool swapReady;
+    private bool inputDetected = false;
 
     // Array de estados
     private string[] elementos = { "RedLayer", "LightLayer", "PurpleLayer", "BlueLayer" };
@@ -31,22 +32,24 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.Space) && swapReady)
+        if (!inputDetected && Input.GetKeyDown(KeyCode.Space) && swapReady)
         {
+            inputDetected = true;
             CambiarEstado();
             StartCoroutine(StateChange());
+
         }
 
       
         horizontal = Input.GetAxisRaw("Horizontal"); //Movimiento en el eje x
         vertical = Input.GetAxisRaw("Vertical"); // Movimiento en el eje y
 
-        if (horizontal != 0 && vertical != 0) 
+        if (horizontal != 0 && vertical != 0) // Impide el movimiento diagonal
         {
             horizontal *= 0;
             vertical *= 0;
             
-        } // Impide el movimiento diagonal
+        } 
 
         // Módulo de comunicación con el animator
         if (body.velocity.magnitude == 0)
@@ -60,6 +63,14 @@ public class CharacterController : MonoBehaviour
 
         animator.SetFloat("X Direction", horizontal);
         animator.SetFloat("Y Direction", vertical);
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+
+            animator.SetTrigger("Attack");
+
+
+        }
 
     }
 
