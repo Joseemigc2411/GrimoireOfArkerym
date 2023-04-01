@@ -72,7 +72,7 @@ public class CharacterController : MonoBehaviour
  
     private void FixedUpdate() // El movimiento del pj se actualiza en un Fixed, que le da más estabilidad
     {
-        body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed).normalized;
+        body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
     }
   
 
