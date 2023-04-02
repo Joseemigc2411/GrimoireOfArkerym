@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,13 +7,19 @@ public class CharacterController : MonoBehaviour
 {
     Rigidbody2D body; 
     Animator animator;
+    public GameObject[] AttackColliders;
 
     float horizontal;
     float vertical;
-   
+    public float attackDistance;
+
+    private Vector2 lastMovementInput;
+    private KeyCode lastKeyInput;
+    KeyCode[] keys = new KeyCode[] { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W, KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.RightArrow, KeyCode.LeftArrow };
 
     public float runSpeed;
     public float cooldownState = 0.2f; //Cooldown de cambio de estado
+    public float attackColliderTime = .1f; //Lo que dura un collider de ataque
 
     bool swapReady;
 
@@ -22,9 +29,14 @@ public class CharacterController : MonoBehaviour
 
     void Start()
     {
-        body = GetComponent<Rigidbody2D>(); // Asigno el Rigidbody2D
-        animator = GetComponent<Animator>(); // Asigno el animator
+        body = GetComponent<Rigidbody2D>(); //Asigno el Rigidbody2D
+        animator = GetComponent<Animator>(); //Asigno el animator
         swapReady = true;
+
+        for (int i = 0; i < AttackColliders.Length; i++) //Desactivamos todos los GameObjects que contienen los colliders de ataque direccional
+        {
+            AttackColliders[i].SetActive(false); 
+        }
         
     }
 
@@ -40,19 +52,31 @@ public class CharacterController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
         {
             animator.SetTrigger("Attack");
+            Attack();
+            
         }
 
       
         horizontal = Input.GetAxisRaw("Horizontal"); //Movimiento en el eje x
-        vertical = Input.GetAxisRaw("Vertical"); // Movimiento en el eje y
+        vertical = Input.GetAxisRaw("Vertical"); //Movimiento en el eje y
 
-        if (horizontal != 0 && vertical != 0) // Impide el movimiento diagonal
+        if (horizontal != 0 && vertical != 0) //Impide el movimiento diagonal
         {
             horizontal *= 0;
             vertical *= 0;    
-        } 
+        }
 
-        // Módulo de comunicación con el animator
+       
+
+        foreach (KeyCode key in keys)
+        {
+            if (Input.GetKeyDown(key))
+            {
+                lastKeyInput = key;         
+                break;
+            }
+        }
+        #region Modulo de comunicacion con el animator
         if (body.velocity.magnitude == 0)
         {
             animator.SetBool("Walking", false);
@@ -65,14 +89,16 @@ public class CharacterController : MonoBehaviour
 
         animator.SetFloat("X Direction", horizontal);
         animator.SetFloat("Y Direction", vertical);
-        
+
+        #endregion
+
     }
 
-    
- 
-    private void FixedUpdate() // El movimiento del pj se actualiza en un Fixed, que le da más estabilidad
+
+
+    private void FixedUpdate() //El movimiento del pj se actualiza en un Fixed, que le da más estabilidad
     {
-        body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed).normalized;
+        body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
     }
   
 
@@ -110,5 +136,57 @@ public class CharacterController : MonoBehaviour
 
     #endregion
 
-   
+    #region Ataque
+    private void Attack()
+    {
+        assignCollider();
+    }
+
+    
+    private void assignCollider() //Con las diferentes condiciones, nos aseguramos de que se va a habilitar el collider correcto
+    {
+        if(horizontal > 0 || lastKeyInput == KeyCode.D || lastKeyInput == KeyCode.RightArrow)
+        {
+            StartCoroutine(PerformAttack(AttackColliders[0]));
+            
+            Debug.Log("He generado un collider a la derecha");
+
+        }
+        else if(vertical > 0 || lastKeyInput == KeyCode.W || lastKeyInput == KeyCode.UpArrow)
+        {
+            StartCoroutine(PerformAttack(AttackColliders[3]));
+           
+            Debug.Log("He generado un collider arriba");
+        }
+        else if (horizontal < 0 || lastKeyInput == KeyCode.A || lastKeyInput == KeyCode.LeftArrow)
+        {
+            StartCoroutine(PerformAttack(AttackColliders[2]));
+        
+            Debug.Log("He generado un collider a la izquierda");
+        }
+        else if (vertical < 0 || lastKeyInput == KeyCode.S || lastKeyInput == KeyCode.DownArrow)
+        {
+            StartCoroutine(PerformAttack(AttackColliders[1]));
+            Debug.Log("He generado un collider abajo");
+        }
+    }
+
+
+
+    
+    private IEnumerator PerformAttack(GameObject attackCollider)
+    {
+       
+        // Activamos el collider de ataque que le hayamos pasado
+        attackCollider.SetActive(true);
+
+        //Espera un momento antes de desactivar el collider de ataque (por ejemplo, 0.25 segundos)
+        yield return new WaitForSeconds(attackColliderTime);
+
+        //Desactiva el collider de ataque
+        attackCollider.SetActive(false);
+
+    }
+
+    #endregion
 }
