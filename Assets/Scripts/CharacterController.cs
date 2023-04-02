@@ -155,25 +155,25 @@ public class CharacterController : MonoBehaviour
         {
             StartCoroutine(PerformAttack(AttackColliders[0]));
             
-            Debug.Log("He generado un collider a la derecha");
+            //Debug.Log("He generado un collider a la derecha");
 
         }
         else if(vertical > 0 || lastKeyInput == KeyCode.W || lastKeyInput == KeyCode.UpArrow)
         {
             StartCoroutine(PerformAttack(AttackColliders[3]));
            
-            Debug.Log("He generado un collider arriba");
+            //Debug.Log("He generado un collider arriba");
         }
         else if (horizontal < 0 || lastKeyInput == KeyCode.A || lastKeyInput == KeyCode.LeftArrow)
         {
             StartCoroutine(PerformAttack(AttackColliders[2]));
         
-            Debug.Log("He generado un collider a la izquierda");
+            //Debug.Log("He generado un collider a la izquierda");
         }
         else if (vertical < 0 || lastKeyInput == KeyCode.S || lastKeyInput == KeyCode.DownArrow)
         {
             StartCoroutine(PerformAttack(AttackColliders[1]));
-            Debug.Log("He generado un collider abajo");
+            //Debug.Log("He generado un collider abajo");
         }
     }
     
