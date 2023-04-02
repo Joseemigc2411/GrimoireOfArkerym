@@ -18,10 +18,12 @@ public class CharacterController : MonoBehaviour
     KeyCode[] keys = new KeyCode[] { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W, KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.RightArrow, KeyCode.LeftArrow };
 
     public float runSpeed;
-    public float cooldownState = 0.2f; //Cooldown de cambio de estado
+    public float cooldownState; //Cooldown de cambio de estado, evita spammeo
     public float attackColliderTime = .1f; //Lo que dura un collider de ataque
+    public float cooldownAttack; //Cooldown de ataque, evita spammeo
 
     bool swapReady;
+    bool attackReady;
 
     // Array de estados
     private string[] elementos = { "RedLayer", "LightLayer", "PurpleLayer", "BlueLayer" };
@@ -32,6 +34,7 @@ public class CharacterController : MonoBehaviour
         body = GetComponent<Rigidbody2D>(); //Asigno el Rigidbody2D
         animator = GetComponent<Animator>(); //Asigno el animator
         swapReady = true;
+        attackReady = true;
 
         for (int i = 0; i < AttackColliders.Length; i++) //Desactivamos todos los GameObjects que contienen los colliders de ataque direccional
         {
@@ -49,11 +52,13 @@ public class CharacterController : MonoBehaviour
             StartCoroutine(StateChange());
         }
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.X) && attackReady)
         {
             animator.SetTrigger("Attack");
             Attack();
-            
+            attackReady = false;
+            StartCoroutine(AttackCooldown());
+
         }
 
       
@@ -68,7 +73,7 @@ public class CharacterController : MonoBehaviour
 
        
 
-        foreach (KeyCode key in keys)
+        foreach (KeyCode key in keys) //Deteccion de ultima tecla presionada que orienta los colliders de ataque  
         {
             if (Input.GetKeyDown(key))
             {
@@ -76,6 +81,7 @@ public class CharacterController : MonoBehaviour
                 break;
             }
         }
+
         #region Modulo de comunicacion con el animator
         if (body.velocity.magnitude == 0)
         {
@@ -96,7 +102,7 @@ public class CharacterController : MonoBehaviour
 
 
 
-    private void FixedUpdate() //El movimiento del pj se actualiza en un Fixed, que le da más estabilidad
+    private void FixedUpdate() //La velocidad del pj se actualiza en un Fixed, que le da más estabilidad
     {
         body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
     }
@@ -143,7 +149,7 @@ public class CharacterController : MonoBehaviour
     }
 
     
-    private void assignCollider() //Con las diferentes condiciones, nos aseguramos de que se va a habilitar el collider correcto
+    private void assignCollider() //Con las diferentes condiciones, asegura que se activa el collider correcto
     {
         if(horizontal > 0 || lastKeyInput == KeyCode.D || lastKeyInput == KeyCode.RightArrow)
         {
@@ -170,22 +176,28 @@ public class CharacterController : MonoBehaviour
             Debug.Log("He generado un collider abajo");
         }
     }
-
-
-
     
-    private IEnumerator PerformAttack(GameObject attackCollider)
+    IEnumerator PerformAttack(GameObject attackCollider)
     {
        
-        // Activamos el collider de ataque que le hayamos pasado
+        //Activa el collider de ataque que le hayamos pasado
         attackCollider.SetActive(true);
 
-        //Espera un momento antes de desactivar el collider de ataque (por ejemplo, 0.25 segundos)
+        //Espera un momento antes de desactivar el collider de ataque
         yield return new WaitForSeconds(attackColliderTime);
 
         //Desactiva el collider de ataque
         attackCollider.SetActive(false);
 
+       
+
+    }
+
+    IEnumerator AttackCooldown() //Corrutina de cooldown para que no se pueda spammear el cambio de estado.
+    {
+        yield return new WaitForSeconds(cooldownAttack);
+        // Debug.Log("Ready");
+        attackReady = true;
     }
 
     #endregion
