@@ -2,11 +2,13 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour
 {
     Rigidbody2D body; 
     Animator animator;
+    public Scrollbar castBar;
     public GameObject[] AttackColliders;
 
     float horizontal;
@@ -19,6 +21,7 @@ public class CharacterController : MonoBehaviour
 
     public float runSpeed;
     public float cooldownState; //Cooldown de cambio de estado, evita spammeo
+    private float cooldownStateValue; //Representa el valor actual de cooldown
     public float attackColliderTime = .1f; //Lo que dura un collider de ataque
     public float cooldownAttack; //Cooldown de ataque, evita spammeo
 
@@ -27,7 +30,7 @@ public class CharacterController : MonoBehaviour
 
     // Array de estados
     private string[] elementos = { "RedLayer", "LightLayer", "PurpleLayer", "BlueLayer" };
-    private int elementoActual = 0;
+    public int elementoActual = 0;
 
     void Start()
     {
@@ -45,13 +48,33 @@ public class CharacterController : MonoBehaviour
 
     void Update()
     {
-        
+        //Gestor del cooldown de cambio de estado y la barra del canvas
+        #region CooldownManager 
+
+        if (cooldownStateValue >= cooldownState) 
+        {
+            swapReady = true;
+        }
+        else
+        {
+            swapReady = false;
+            cooldownStateValue += Time.deltaTime;
+            cooldownStateValue = Mathf.Clamp(cooldownStateValue, 0.0f, cooldownState);
+
+        }
+
+        castBar.size = cooldownStateValue / cooldownState;
+        #endregion 
+
         if (Input.GetKeyDown(KeyCode.Space) && swapReady)
         {
             CambiarEstado();
-            StartCoroutine(StateChange());
         }
-
+       
+        
+            castBar.size = cooldownStateValue / cooldownState;
+        
+        
         if (Input.GetKeyDown(KeyCode.X) && attackReady)
         {
             animator.SetTrigger("Attack");
@@ -112,6 +135,7 @@ public class CharacterController : MonoBehaviour
 
     void CambiarEstado() // Función para cambiar el estado del personaje 
     {
+        cooldownStateValue = 0;
 
         if (elementoActual == elementos.Length - 1) // Esta condición es la que permite volver al color rojo cuando se ha recorrido el array completo
         {       
@@ -124,21 +148,13 @@ public class CharacterController : MonoBehaviour
             animator.SetLayerWeight(elementoActual - 1, 0);
         }
 
-       
+        
         animator.SetLayerWeight(elementoActual, 1);
         swapReady = false;
         // Debug.Log("Estado actual: " + elementos[elementoActual]);
         // Debug.Log(elementoActual);
 
     }   
-
-    
-    IEnumerator StateChange() //Corrutina de cooldown para que no se pueda spammear el cambio de estado.
-    {
-        yield return new WaitForSeconds(cooldownState);
-        // Debug.Log("Ready");
-        swapReady = true;
-    }
 
     #endregion
 
