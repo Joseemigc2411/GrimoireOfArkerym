@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5370534238975188701}
   m_Layer: 0
   m_Name: LeftAttackCollider
-  m_TagString: Untagged
+  m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 1523312464834683917}
   m_Layer: 0
   m_Name: DownAttackCollider
-  m_TagString: Untagged
+  m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 2449306455395996239}
   m_Layer: 0
   m_Name: Link
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -373,6 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e29c60fc305433d49a81196e706fe4eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  castBar: {fileID: 0}
   AttackColliders:
   - {fileID: 8364322889379089611}
   - {fileID: 1481772407354799598}
@@ -383,6 +384,7 @@ MonoBehaviour:
   cooldownState: 0.5
   attackColliderTime: 0.1
   cooldownAttack: 0
+  elementoActual: 0
 --- !u!95 &2449306455395996239
 Animator:
   serializedVersion: 5
@@ -417,7 +419,7 @@ GameObject:
   - component: {fileID: 4479698319618695808}
   m_Layer: 0
   m_Name: RightAttackCollider
-  m_TagString: Untagged
+  m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -528,7 +530,7 @@ GameObject:
   - component: {fileID: 3079689509185457436}
   m_Layer: 0
   m_Name: TopAttackCollider
-  m_TagString: Untagged
+  m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

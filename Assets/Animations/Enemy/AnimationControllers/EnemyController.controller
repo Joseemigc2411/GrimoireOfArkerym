@@ -190,7 +190,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Base Layer
+  m_Name: RedLayer
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -1452241093901136511}
@@ -268,6 +268,25 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1107 &-1472576552681760182
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BlueLayer
+  m_ChildStates: []
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: 0}
 --- !u!1102 &-1452241093901136511
 AnimatorState:
   serializedVersion: 6
@@ -311,22 +330,94 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Y Direction
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
-    m_Name: Base Layer
+    m_Name: RedLayer
     m_StateMachine: {fileID: -3176139538764106285}
     m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: -1
+    m_DefaultWeight: 0
+    m_IKPass: 0
+    m_SyncedLayerAffectsTiming: 0
+    m_Controller: {fileID: 9100000}
+  - serializedVersion: 5
+    m_Name: LightLayer
+    m_StateMachine: {fileID: 1676459708754627750}
+    m_Mask: {fileID: 0}
+    m_Motions:
+    - serializedVersion: 2
+      m_State: {fileID: -1452241093901136511}
+      m_Motion: {fileID: 7400000, guid: 323aa2e3fa2d5814190e5bac198c9b07, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: -2984061842192471861}
+      m_Motion: {fileID: 7400000, guid: af1e3807986e503468af0e0c5f74c360, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: -5293495514752394447}
+      m_Motion: {fileID: 7400000, guid: ea9fd38c18c85fe45a372bf3f1d98355, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: -4350027413286155575}
+      m_Motion: {fileID: 7400000, guid: bf06f9184deab194b91460cd05534a57, type: 2}
+    m_Behaviours: []
+    m_BlendingMode: 0
+    m_SyncedLayerIndex: 0
+    m_DefaultWeight: 0
+    m_IKPass: 0
+    m_SyncedLayerAffectsTiming: 0
+    m_Controller: {fileID: 9100000}
+  - serializedVersion: 5
+    m_Name: PurpleLayer
+    m_StateMachine: {fileID: 4150205305852607067}
+    m_Mask: {fileID: 0}
+    m_Motions:
+    - serializedVersion: 2
+      m_State: {fileID: -1452241093901136511}
+      m_Motion: {fileID: 7400000, guid: 450c79f2bdf409a4ca7ea57d0e9ab52a, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: -2984061842192471861}
+      m_Motion: {fileID: 7400000, guid: 23b081d0b4e433a459c6665994c17153, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: -5293495514752394447}
+      m_Motion: {fileID: 7400000, guid: fe6054eb1a6f6584d8438eec12a92fc3, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: -4350027413286155575}
+      m_Motion: {fileID: 7400000, guid: 30ee3716badc8754c8c7cd1add5a9b69, type: 2}
+    m_Behaviours: []
+    m_BlendingMode: 0
+    m_SyncedLayerIndex: 0
+    m_DefaultWeight: 0
+    m_IKPass: 0
+    m_SyncedLayerAffectsTiming: 0
+    m_Controller: {fileID: 9100000}
+  - serializedVersion: 5
+    m_Name: BlueLayer
+    m_StateMachine: {fileID: -1472576552681760182}
+    m_Mask: {fileID: 0}
+    m_Motions:
+    - serializedVersion: 2
+      m_State: {fileID: -1452241093901136511}
+      m_Motion: {fileID: 7400000, guid: 61ee0b93397166847941880f598ca2d0, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: -2984061842192471861}
+      m_Motion: {fileID: 7400000, guid: 8685d9575f407b746ab973730c2b83ea, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: -5293495514752394447}
+      m_Motion: {fileID: 7400000, guid: 14910bacb459c1b438d5a8c124ba20e8, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: -4350027413286155575}
+      m_Motion: {fileID: 7400000, guid: 0921422376fcd494cbb67091bc58ca2f, type: 2}
+    m_Behaviours: []
+    m_BlendingMode: 0
+    m_SyncedLayerIndex: 0
     m_DefaultWeight: 0
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
@@ -406,6 +497,44 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1107 &1676459708754627750
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LightLayer
+  m_ChildStates: []
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: 0}
+--- !u!1107 &4150205305852607067
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PurpleLayer
+  m_ChildStates: []
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: 0}
 --- !u!1101 &5838408790850696270
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

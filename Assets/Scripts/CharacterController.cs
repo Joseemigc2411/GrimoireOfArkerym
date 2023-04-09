@@ -30,7 +30,9 @@ public class CharacterController : MonoBehaviour
 
     // Array de estados
     private string[] elementos = { "RedLayer", "LightLayer", "PurpleLayer", "BlueLayer" };
-    public int elementoActual = 0;
+
+    public int elementoActual = 0; //Esta variable no solo sirve internamente, sino para que el enemigo compruebe si le están golpeando con su elemento y recibir el daño o no
+    
 
     void Start()
     {
@@ -48,8 +50,9 @@ public class CharacterController : MonoBehaviour
 
     void Update()
     {
-        //Gestor del cooldown de cambio de estado y la barra del canvas
-        #region CooldownManager 
+
+        //Gestor del cooldown de cambio de estado y de la barra del canvas
+        #region CooldownManager
 
         if (cooldownStateValue >= cooldownState) 
         {
@@ -65,6 +68,9 @@ public class CharacterController : MonoBehaviour
 
         castBar.size = cooldownStateValue / cooldownState;
         #endregion 
+
+        //Módulo de gestión de inputs
+        #region InputManager
 
         if (Input.GetKeyDown(KeyCode.Space) && swapReady)
         {
@@ -105,7 +111,11 @@ public class CharacterController : MonoBehaviour
             }
         }
 
-        #region Modulo de comunicacion con el animator
+        #endregion
+
+        //Actualización de variables del animator
+        #region Animator
+
         if (body.velocity.magnitude == 0)
         {
             animator.SetBool("Walking", false);
@@ -123,15 +133,13 @@ public class CharacterController : MonoBehaviour
 
     }
 
-
-
     private void FixedUpdate() //La velocidad del pj se actualiza en un Fixed, que le da más estabilidad
     {
         body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
     }
   
 
-    #region Cambio de Estado
+    #region Funciones de Cambio de Estado
 
     void CambiarEstado() // Función para cambiar el estado del personaje 
     {
@@ -158,7 +166,8 @@ public class CharacterController : MonoBehaviour
 
     #endregion
 
-    #region Ataque
+    #region Funciones Ataque
+
     private void Attack()
     {
         assignCollider();
@@ -217,4 +226,5 @@ public class CharacterController : MonoBehaviour
     }
 
     #endregion
+
 }
