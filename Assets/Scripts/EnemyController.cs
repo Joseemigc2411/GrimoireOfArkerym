@@ -8,30 +8,26 @@ public class EnemyController : MonoBehaviour
     private Transform playerTransform;
     private Animator animator;
 
-    public float speed = 3.0f;
-    public float detectMultiplier;
-    public float chaseRadius = 5.0f;
-    private float nextDirectionChangeTime;
+    public float speed;
+    public float chaseRadius, detectMultiplier, nextDirectionChangeTime;
     public string obstacleTag;
 
-    private string[] elementos = { "RedLayer", "LightLayer", "PurpleLayer", "BlueLayer" };
-
-    public int HP = 2;
+    public int HP, actualSpellEnemy;
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         nextDirectionChangeTime = Time.time;
+        actualSpellEnemy = UnityEngine.Random.Range(0, 4);
+        animator.SetLayerWeight(actualSpellEnemy, 1);
     }
 
     void Update()
     {
         Vector2 directionToPlayer = (playerTransform.position - transform.position).normalized;
-
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
         if (distanceToPlayer <= chaseRadius)
@@ -131,7 +127,7 @@ public class EnemyController : MonoBehaviour
       
     }
 
-    
 
+    
 
 }
