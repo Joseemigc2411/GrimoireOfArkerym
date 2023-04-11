@@ -8,8 +8,8 @@ public class CharacterController : MonoBehaviour
 {
     Rigidbody2D body; 
     Animator animator;
-    public Scrollbar castBar;
-    public GameObject[] AttackColliders;
+    public Scrollbar castBar, healthBar; //Variables de las scrollbars del canvas
+    public GameObject[] AttackColliders; //Array de Game Objects correspondientes a los colliders de ataque
 
     float horizontal;
     float vertical;
@@ -28,6 +28,10 @@ public class CharacterController : MonoBehaviour
     bool swapReady;
     bool attackReady;
 
+    public int dmgLandEnemy;
+
+    public int HP;
+
     // Array de estados
     private string[] elementos = { "RedLayer", "LightLayer", "PurpleLayer", "BlueLayer" };
 
@@ -40,6 +44,7 @@ public class CharacterController : MonoBehaviour
         animator = GetComponent<Animator>(); //Asigno el animator
         swapReady = true;
         attackReady = true;
+        HP = 100;
 
         for (int i = 0; i < AttackColliders.Length; i++) //Desactivamos todos los GameObjects que contienen los colliders de ataque direccional
         {
@@ -131,13 +136,21 @@ public class CharacterController : MonoBehaviour
 
         #endregion
 
+        healthBar.size = HP;
     }
 
     private void FixedUpdate() //La velocidad del pj se actualiza en un Fixed, que le da más estabilidad
     {
         body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
     }
-  
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "LandEnemy")
+        {
+            TakeDamage(dmgLandEnemy);
+        }
+    }
 
     #region Funciones de Cambio de Estado
 
@@ -226,5 +239,12 @@ public class CharacterController : MonoBehaviour
     }
 
     #endregion
+
+    private void TakeDamage(int damage)
+    {
+        HP -= damage;
+
+        //Emitir sonido de daño y probar a meter algo de feedback extra.
+    }
 
 }

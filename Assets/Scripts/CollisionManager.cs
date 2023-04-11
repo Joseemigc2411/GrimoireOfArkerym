@@ -4,26 +4,27 @@ using UnityEngine;
 
 public class CollisionManager : MonoBehaviour
 {
-    [SerializeField]
-    private string targetTag = "Sword";
-    [SerializeField]
-    private int damage = 1;
+    
+   
+    public int damage = 1;
 
-    private EnemyController enemyController;
+    public EnemyController enemyController;
 
     public CharacterController playerController;
 
     void Start()
     {
         enemyController = GetComponentInParent<EnemyController>();
-        playerController = GetComponent<CharacterController>();
+        playerController = GameObject.FindWithTag("Player").GetComponent<CharacterController>();
+        //Se tuvo que poner así porque el script perdía la referencia del jugador por algún motivo desconocido.
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(targetTag))
+        if (other != null && other.CompareTag("Sword") && enemyController != null)
         {
-            enemyController.TakeDamage(damage, playerController.elementoActual); //Le pasamos al enemigo el daño que le hará el golpe y el hechizo activo del jugador. 
+            Debug.Log("He entrado al bucle");
+            enemyController.TakeDamage(damage, playerController.elementoActual);
         }
     }
 }

@@ -105,6 +105,7 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage(int damage, int activeSpell)
     {
+        if(activeSpell == actualSpellEnemy)
         HP -= damage;
 
         if (HP <= 0)
