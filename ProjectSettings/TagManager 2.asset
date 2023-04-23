@@ -6,8 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - Sword
-  - LandEnemy
-  - SpawnZone
+  - "\u2211c zx"
   layers:
   - Default
   - TransparentFX

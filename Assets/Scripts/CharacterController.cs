@@ -30,7 +30,8 @@ public class CharacterController : MonoBehaviour
 
     public int dmgLandEnemy;
 
-    public int HP;
+    public float maxHealth = 100f;
+    public float HP;
 
     // Array de estados
     private string[] elementos = { "RedLayer", "LightLayer", "PurpleLayer", "BlueLayer" };
@@ -44,7 +45,7 @@ public class CharacterController : MonoBehaviour
         animator = GetComponent<Animator>(); //Asigno el animator
         swapReady = true;
         attackReady = true;
-        HP = 100;
+        HP = maxHealth;
 
         for (int i = 0; i < AttackColliders.Length; i++) //Desactivamos todos los GameObjects que contienen los colliders de ataque direccional
         {
@@ -136,7 +137,7 @@ public class CharacterController : MonoBehaviour
 
         #endregion
 
-        healthBar.size = HP;
+        healthBar.size = HP / maxHealth;
     }
 
     private void FixedUpdate() //La velocidad del pj se actualiza en un Fixed, que le da más estabilidad
@@ -240,7 +241,7 @@ public class CharacterController : MonoBehaviour
 
     #endregion
 
-    private void TakeDamage(int damage)
+    private void TakeDamage(float damage)
     {
         HP -= damage;
 
