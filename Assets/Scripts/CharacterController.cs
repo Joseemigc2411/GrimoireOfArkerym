@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
@@ -147,8 +148,19 @@ public class CharacterController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "LandEnemy")
+        if (collision.gameObject.CompareTag("LandEnemy"))
         {
+            TakeDamage(dmgLandEnemy);
+        }
+        
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.CompareTag("Phantom"))
+        {
+            Debug.Log("Fantasma colision");
             TakeDamage(dmgLandEnemy);
         }
     }

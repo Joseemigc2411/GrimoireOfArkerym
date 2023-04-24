@@ -52,7 +52,7 @@ public class EnemyController : MonoBehaviour
 
     void MoveTowardsPlayer(Vector2 direction)
     {
-        rb.velocity = new Vector2(Mathf.Round(direction.x), Mathf.Round(direction.y)) * detectMultiplier * speed; //Cuando el enemigo detecta al jugador, su velocidad se duplica
+        rb.velocity = new Vector2(Mathf.Round(direction.x), Mathf.Round(direction.y)) * (detectMultiplier * speed); //Cuando el enemigo detecta al jugador, su velocidad se duplica
         
     }
 
