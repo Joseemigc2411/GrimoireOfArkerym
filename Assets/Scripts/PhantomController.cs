@@ -35,26 +35,29 @@ public class PhantomController : MonoBehaviour
     
     void MoveTowardsPlayer(Vector2 direction)
     {
-        rb.velocity = new Vector2(Mathf.Round(direction.x), Mathf.Round(direction.y)) * (speed); 
-        
+        rb.velocity = direction.normalized * speed;         
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Me destruyo porque he tocado al jugador.");
             Destroy(gameObject);
         }
+        
         
     }
 
     public void TakeDamage(int damage, int activeSpell)
     {
+        
         if (activeSpell == actualSpellEnemy)
             HP -= damage;
 
         if (HP <= 0)
         {
+            Debug.Log("Me destruyo porque el jugador me ha matado");
             Destroy(gameObject);
         }       
     }

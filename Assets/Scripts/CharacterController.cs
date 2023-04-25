@@ -154,6 +154,7 @@ public class CharacterController : MonoBehaviour
         }
         
         
+        
     }
 
     private void OnTriggerEnter2D(Collider2D other)
