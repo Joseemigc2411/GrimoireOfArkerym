@@ -29,7 +29,7 @@ public class CharacterController : MonoBehaviour
     bool swapReady;
     bool attackReady;
 
-    public int dmgLandEnemy;
+    public float dmgLandEnemy;
 
     public float maxHealth = 100f;
     public float HP;
@@ -38,12 +38,20 @@ public class CharacterController : MonoBehaviour
     private string[] elementos = { "RedLayer", "LightLayer", "PurpleLayer", "BlueLayer" };
 
     public int elementoActual = 0; //Esta variable no solo sirve internamente, sino para que el enemigo compruebe si le están golpeando con su elemento y recibir el daño o no
+
+    [Header("Variables de Blink de Sprite")]
+    public float blinkDuration = 1f;
+    public float blinkInterval = 0.1f;
+    public bool isBlinking = false;
+    private SpriteRenderer spriteRenderer;
+    
     
 
     void Start()
     {
         body = GetComponent<Rigidbody2D>(); //Asigno el Rigidbody2D
         animator = GetComponent<Animator>(); //Asigno el animator
+        spriteRenderer = GetComponent<SpriteRenderer>();
         swapReady = true;
         attackReady = true;
         HP = maxHealth;
@@ -148,24 +156,15 @@ public class CharacterController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        
         if (collision.gameObject.CompareTag("LandEnemy"))
         {
-            TakeDamage(dmgLandEnemy);
-        }
-        
-        
-        
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.gameObject.CompareTag("Phantom"))
-        {
-            Debug.Log("Fantasma colision");
-            TakeDamage(dmgLandEnemy);
+            TakeDamage();
+            Blink();
         }
     }
-
+    
+   
     #region Funciones de Cambio de Estado
 
     void CambiarEstado() // Función para cambiar el estado del personaje 
@@ -254,11 +253,41 @@ public class CharacterController : MonoBehaviour
 
     #endregion
 
-    private void TakeDamage(float damage)
+    public void TakeDamage()
     {
-        HP -= damage;
+        HP -= 50;
 
+        Debug.Log("Daño recibido");
         //Emitir sonido de daño y probar a meter algo de feedback extra.
     }
+
+    #region PlayerBlink
+
+        public void Blink()
+        {
+            StartCoroutine(BlinkCoroutine());
+        }
+
+        private IEnumerator BlinkCoroutine()
+        {
+            
+            float elapsedTime = 0;
+            bool isVisible = true;
+
+            while (elapsedTime < blinkDuration)
+            {
+                isVisible = !isVisible;
+                spriteRenderer.enabled = isVisible;
+                elapsedTime += blinkInterval;
+                yield return new WaitForSeconds(blinkInterval);
+            }
+
+            
+            spriteRenderer.enabled = true;
+        }
+        
+    #endregion
+    
+    
 
 }

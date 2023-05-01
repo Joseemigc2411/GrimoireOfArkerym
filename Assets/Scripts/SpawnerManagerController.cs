@@ -8,7 +8,7 @@ public class SpawnerManagerController : MonoBehaviour
     public SpawnPointController spawnPointController;
     public float spawnPhantomCounter = 2;
     private bool spawnReady;
-    private int numEnemiesAlive = 0;
+    
     
 // Start is called before the first frame update
     void Start()
@@ -19,13 +19,12 @@ public class SpawnerManagerController : MonoBehaviour
 // Update is called once per frame
     void Update()
     {
-        if (spawnPhantomCounter > 0 && spawnReady && numEnemiesAlive == 0)
+        if (spawnPhantomCounter > 0 && spawnReady)
         {
             spawnReady = false;
             int randomValue = Random.Range(0, 4);
             spawnPointController = spawnerList[randomValue].GetComponentInChildren<SpawnPointController>();
             spawnPointController.spawnEnemy();
-            ++numEnemiesAlive;
             --spawnPhantomCounter;
             StartCoroutine(spawnerTime());
         }
@@ -33,15 +32,10 @@ public class SpawnerManagerController : MonoBehaviour
 
     IEnumerator spawnerTime()
     {
-        while (numEnemiesAlive > 0) {
-            yield return null;
-        }
-        yield return new WaitForSeconds(5);
+       
+        yield return new WaitForSeconds(15);
         spawnReady = true;
     }
 
-    public void EnemyKilled()
-    {
-        --numEnemiesAlive;
-    }
+    
 }
