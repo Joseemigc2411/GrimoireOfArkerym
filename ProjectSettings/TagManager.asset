@@ -9,6 +9,7 @@ TagManager:
   - LandEnemy
   - SpawnZone
   - Phantom
+  - Manager
   layers:
   - Default
   - TransparentFX
