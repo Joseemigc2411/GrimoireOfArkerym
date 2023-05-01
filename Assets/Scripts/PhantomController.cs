@@ -10,6 +10,7 @@ public class PhantomController : MonoBehaviour
     private Transform playerTransform;
     private Animator animator;
     private CharacterController player;
+    private CoinManager CoinManager;
     int HP = 1, actualSpellEnemy;
     
     public float speed;
@@ -23,19 +24,20 @@ public class PhantomController : MonoBehaviour
             animator = GetComponent<Animator>();
             player = GameObject.FindWithTag("Player").GetComponent<CharacterController>();
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+            CoinManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<CoinManager>();
             
         #endregion
         
-        actualSpellEnemy = UnityEngine.Random.Range(0, 4); //Valor random para la capa del Animator
-        animator.SetLayerWeight(actualSpellEnemy, 1); //Seteamos el peso en el animator a la capa generada aleatoriamente
+        // Valor random para la capa del Animator
+        actualSpellEnemy = UnityEngine.Random.Range(0, 4);
+        
+        // Seteamos el peso en el animator a la capa generada aleatoriamente
+        animator.SetLayerWeight(actualSpellEnemy, 1); 
     }
-
-    // Update is called once per frame
     void Update()
     {
         Vector2 directionToPlayer = (playerTransform.position - transform.position).normalized;
         MoveTowardsPlayer(directionToPlayer);
-        
     }
     
     void MoveTowardsPlayer(Vector2 direction)
@@ -47,7 +49,6 @@ public class PhantomController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Me destruyo porque he tocado al jugador.");
             player.TakeDamage();
             Destroy(gameObject);
         }
@@ -57,13 +58,15 @@ public class PhantomController : MonoBehaviour
     
     public void TakeDamage(int damage, int activeSpell)
     {
-        
-        if (activeSpell == actualSpellEnemy)
-            HP -= damage;
 
+        if (activeSpell == actualSpellEnemy)
+        {
+            HP -= damage;
+        }
+        
         if (HP <= 0)
         {
-            Debug.Log("Me destruyo porque el jugador me ha matado");
+            CoinManager.addCoins(15);
             Destroy(gameObject);
         }       
     }
