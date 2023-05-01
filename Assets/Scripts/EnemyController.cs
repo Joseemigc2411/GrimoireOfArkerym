@@ -7,6 +7,7 @@ public class EnemyController : MonoBehaviour
     private Rigidbody2D rb;
     private Transform playerTransform;
     private Animator animator;
+    private CoinManager CoinManager;
 
     public float speed;
     public float chaseRadius, detectMultiplier, nextDirectionChangeTime;
@@ -20,6 +21,8 @@ public class EnemyController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        CoinManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<CoinManager>();
+        
         nextDirectionChangeTime = Time.time;
         actualSpellEnemy = UnityEngine.Random.Range(0, 4);
         animator.SetLayerWeight(actualSpellEnemy, 1);
@@ -105,11 +108,14 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage(int damage, int activeSpell)
     {
-        if(activeSpell == actualSpellEnemy)
-        HP -= damage;
+        if (activeSpell == actualSpellEnemy)
+        {
+            HP -= damage;
+        }
 
         if (HP <= 0)
         {
+            CoinManager.addCoins(20);
             Destroy(gameObject);
         }       
     }
