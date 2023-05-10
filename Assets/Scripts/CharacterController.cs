@@ -44,6 +44,9 @@ public class CharacterController : MonoBehaviour
     public float blinkInterval = 0.1f;
     public bool isBlinking = false;
     private SpriteRenderer spriteRenderer;
+
+    public bool attackButtonPressed;
+    public bool swapButtonPressed;
     
     
 
@@ -87,15 +90,19 @@ public class CharacterController : MonoBehaviour
         //Módulo de gestión de inputs
         #region InputManager
 
+        
+        /*
         if (Input.GetKeyDown(KeyCode.Space) && swapReady)
         {
             CambiarEstado();
         }
+        */
        
         
             castBar.size = cooldownStateValue / cooldownState;
         
-        
+            
+        /*
         if (Input.GetKeyDown(KeyCode.X) && attackReady)
         {
             animator.SetTrigger("Attack");
@@ -104,11 +111,12 @@ public class CharacterController : MonoBehaviour
             StartCoroutine(AttackCooldown());
 
         }
-
+        */
       
-        horizontal = Input.GetAxisRaw("Horizontal"); //Movimiento en el eje x
-        vertical = Input.GetAxisRaw("Vertical"); //Movimiento en el eje y
+            horizontal = SimpleInput.GetAxis("Horizontal"); //Movimiento en el eje x
+            vertical = SimpleInput.GetAxis("Vertical"); //Movimiento en el eje y
 
+        
         if (horizontal != 0 && vertical != 0) //Impide el movimiento diagonal
         {
             horizontal *= 0;
@@ -119,7 +127,7 @@ public class CharacterController : MonoBehaviour
 
         foreach (KeyCode key in keys) //Deteccion de ultima tecla presionada que orienta los colliders de ataque  
         {
-            if (Input.GetKeyDown(key))
+            if (SimpleInput.GetKeyDown(key)) //ESTO LO HE CAMBIADO... POR SI ACASO NO VA 
             {
                 lastKeyInput = key;         
                 break;
@@ -287,7 +295,23 @@ public class CharacterController : MonoBehaviour
         }
         
     #endregion
-    
+
+    public void touckAttack()
+    {
+        if (attackReady)
+        {
+            animator.SetTrigger("Attack");
+            Attack();
+            attackReady = false;
+            StartCoroutine(AttackCooldown());
+        }
+    }
+
+    public void touchSwap()
+    {
+        if(swapReady)
+        CambiarEstado();
+    }
     
 
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class CoinManager : MonoBehaviour
 {
@@ -42,5 +43,10 @@ public class CoinManager : MonoBehaviour
         currentCoins = PlayerPrefs.GetInt("monedas", 0);
         currentCoins -= coinsTaken;
         PlayerPrefs.SetInt("monedas", currentCoins);
+    }
+    
+    public void playGame()
+    {
+        SceneManager.LoadScene("GameplayScene");
     }
 }
