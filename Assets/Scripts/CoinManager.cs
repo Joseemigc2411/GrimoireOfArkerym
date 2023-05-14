@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class CoinManager : MonoBehaviour
 {
     int currentCoins = 0;
+    public float playerMaxHP = 100;
 
     public TextMeshProUGUI currentCoinsText;
 
@@ -19,6 +20,7 @@ public class CoinManager : MonoBehaviour
         if (firstGame)
         {
             PlayerPrefs.SetInt("Coins", currentCoins);
+            PlayerPrefs.SetFloat("Health", playerMaxHP);
             firstGame = false;
         }
         
@@ -48,5 +50,25 @@ public class CoinManager : MonoBehaviour
     public void playGame()
     {
         SceneManager.LoadScene("GameplayScene");
+    }
+    
+    public void mainMenu()
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
+    
+    public void retryCoins()
+    {
+        if (PlayerPrefs.GetInt("monedas", 0) >= 200) //Si las monedas del jugador no superan las 200, no pasara nada
+        {
+            takeCoins(200); //En caso de que tenga 200 monedas o mas, se las restamos.
+            SceneManager.LoadScene("GameplayScene");
+        }
+        
+    }
+    
+    public void adScene()
+    {
+        SceneManager.LoadScene("AdScene");
     }
 }

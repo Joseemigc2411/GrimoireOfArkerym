@@ -52,6 +52,7 @@ public class CharacterController : MonoBehaviour
 
     void Start()
     {
+        maxHealth = PlayerPrefs.GetFloat("Health", 0);
         body = GetComponent<Rigidbody2D>(); //Asigno el Rigidbody2D
         animator = GetComponent<Animator>(); //Asigno el animator
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -90,6 +91,8 @@ public class CharacterController : MonoBehaviour
         //Módulo de gestión de inputs
         #region InputManager
 
+        //LOS INPUTS POR TECLADO HAN SIDO DESACTIVADOS AL TRATARSE DE UN JUEGO DE MOVIL. PARA INTEGRARLOS,
+        //BASTARIA CON QUITAR LOS COMENTARIOS
         
         /*
         if (Input.GetKeyDown(KeyCode.Space) && swapReady)
@@ -266,7 +269,7 @@ public class CharacterController : MonoBehaviour
         HP -= 50;
 
         Debug.Log("Daño recibido");
-        //Emitir sonido de daño y probar a meter algo de feedback extra.
+        
     }
 
     #region PlayerBlink
@@ -296,22 +299,26 @@ public class CharacterController : MonoBehaviour
         
     #endregion
 
-    public void touckAttack()
-    {
-        if (attackReady)
-        {
-            animator.SetTrigger("Attack");
-            Attack();
-            attackReady = false;
-            StartCoroutine(AttackCooldown());
-        }
-    }
 
-    public void touchSwap()
-    {
-        if(swapReady)
-        CambiarEstado();
-    }
-    
+    //Metodos de controles tactiles
+    #region TouchControls 
+        public void touckAttack()
+        {
+            if (attackReady)
+            {
+                animator.SetTrigger("Attack");
+                Attack();
+                attackReady = false;
+                StartCoroutine(AttackCooldown());
+            }
+        }
+        public void touchSwap()
+        {
+            if(swapReady)
+                CambiarEstado();
+        }
+    #endregion
+
+
 
 }
