@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using SimpleInputNamespace;
 
 public class CharacterController : MonoBehaviour
 {
@@ -11,11 +12,14 @@ public class CharacterController : MonoBehaviour
     Animator animator;
     public Scrollbar castBar, healthBar; //Variables de las scrollbars del canvas
     public GameObject[] AttackColliders; //Array de Game Objects correspondientes a los colliders de ataque
+    public Dpad dpad;
 
     float horizontal;
     float vertical;
-    public float attackDistance;
+    float lastHorizontal;
+    float lastVertical = -1f;
 
+    public float attackDistance;
     private Vector2 lastMovementInput;
     private KeyCode lastKeyInput;
     KeyCode[] keys = new KeyCode[] { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W, KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.RightArrow, KeyCode.LeftArrow };
@@ -69,6 +73,17 @@ public class CharacterController : MonoBehaviour
 
     void Update()
     {
+        float dPadValueX = dpad.xAxis.value;
+        float dPadValueY = dpad.yAxis.value;
+
+        if(dPadValueX != 0)
+        {
+            lastHorizontal = dPadValueX;
+        }
+        if(dPadValueY != 0)
+        {
+            lastVertical = dPadValueY;
+        }
 
         //Gestor del cooldown de cambio de estado y de la barra del canvas
         #region CooldownManager
@@ -213,29 +228,29 @@ public class CharacterController : MonoBehaviour
     
     private void assignCollider() //Con las diferentes condiciones, asegura que se activa el collider correcto
     {
-        if(horizontal > 0 || lastKeyInput == KeyCode.D || lastKeyInput == KeyCode.RightArrow)
+        if(horizontal > 0 || lastKeyInput == KeyCode.D || lastKeyInput == KeyCode.RightArrow || lastHorizontal == 1)
         {
             StartCoroutine(PerformAttack(AttackColliders[0]));
             
-            //Debug.Log("He generado un collider a la derecha");
+            Debug.Log("He generado un collider a la derecha");
 
         }
-        else if(vertical > 0 || lastKeyInput == KeyCode.W || lastKeyInput == KeyCode.UpArrow)
+        else if(vertical > 0 || lastKeyInput == KeyCode.W || lastKeyInput == KeyCode.UpArrow || lastVertical == 1)
         {
             StartCoroutine(PerformAttack(AttackColliders[3]));
            
-            //Debug.Log("He generado un collider arriba");
+            Debug.Log("He generado un collider arriba");
         }
-        else if (horizontal < 0 || lastKeyInput == KeyCode.A || lastKeyInput == KeyCode.LeftArrow)
+        else if (horizontal < 0 || lastKeyInput == KeyCode.A || lastKeyInput == KeyCode.LeftArrow || lastHorizontal == -1)
         {
             StartCoroutine(PerformAttack(AttackColliders[2]));
         
-            //Debug.Log("He generado un collider a la izquierda");
+            Debug.Log("He generado un collider a la izquierda");
         }
-        else if (vertical < 0 || lastKeyInput == KeyCode.S || lastKeyInput == KeyCode.DownArrow)
+        else if (vertical < 0 || lastKeyInput == KeyCode.S || lastKeyInput == KeyCode.DownArrow || lastVertical == -1)
         {
             StartCoroutine(PerformAttack(AttackColliders[1]));
-            //Debug.Log("He generado un collider abajo");
+            Debug.Log("He generado un collider abajo");
         }
     }
     

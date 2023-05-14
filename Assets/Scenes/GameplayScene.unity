@@ -1548,6 +1548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de0cc4ee773908458405277eb8a10de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMaxHP: 100
   currentCoinsText: {fileID: 607258773}
   firstGame: 1
 --- !u!4 &689689087 stripped
@@ -2068,6 +2069,10 @@ PrefabInstance:
       value: -0.017028451
       objectReference: {fileID: 0}
     - target: {fileID: 2449306455395996238, guid: 8df8086fe4b23f043be70f4644211605, type: 3}
+      propertyPath: dpad
+      value: 
+      objectReference: {fileID: 1403095912}
+    - target: {fileID: 2449306455395996238, guid: 8df8086fe4b23f043be70f4644211605, type: 3}
       propertyPath: castBar
       value: 
       objectReference: {fileID: 478342634}
@@ -2320,6 +2325,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 224150926742435176, guid: f85b4a2b127c8b844b3e08d59561124d, type: 3}
   m_PrefabInstance: {fileID: 496141652}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1403095912 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114020615571326846, guid: f85b4a2b127c8b844b3e08d59561124d, type: 3}
+  m_PrefabInstance: {fileID: 496141652}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98005cf4195d9954cb478595517f0d7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1519619315
 PrefabInstance:
   m_ObjectHideFlags: 0
