@@ -1,31 +1,92 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEngine.TextCore.Text;
 
 public class GameManager : MonoBehaviour
 {
-    private CharacterController Player;
-    // Start is called before the first frame update
+    private int currentCoins = 0;
+    public float playerMaxHP = 100, runSpeed = 1f, cooldown = 0.5f;
+    
+    public TextMeshProUGUI currentCoinsText;
+    public bool firstGame = false;
+    private int counter , currentCounter;
+    
+    
+   
     void Start()
     {
-        Player = GameObject.FindWithTag("Player").GetComponent<CharacterController>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Player.HP <= 0)
+        if (PlayerPrefs.GetInt("GameCounter", 0) == 0)
         {
-           
-            SceneManager.LoadScene("GameOverScene");
+            PlayerPrefs.SetInt("GameCounter", 1);
+            firstGame = true;
+            Debug.Log("variable seteada");
             
+            if (firstGame)
+            {
+                Debug.Log("entro al bucle de inicio de juego");
+                PlayerPrefs.SetFloat("Health", playerMaxHP);
+                PlayerPrefs.SetFloat("Speed", runSpeed);
+                PlayerPrefs.SetFloat("Cooldown", cooldown);
+                PlayerPrefs.SetInt("Counter", currentCounter);
+                firstGame = false;
+            }
         }
-    }
-
-    void GameOver()
-    {
+        
         
     }
+
+   
+    void Update()
+    {
+        currentCoins = PlayerPrefs.GetInt("monedas", 0);
+        currentCoinsText.text = currentCoins.ToString("0");
+    }
+
+    #region Coin Management Region
+        
+        public void addCoins(int coinsGiven)
+        {
+            currentCoins = PlayerPrefs.GetInt("monedas", 0);
+            currentCoins += coinsGiven;
+            PlayerPrefs.SetInt("monedas", currentCoins);
+        }
+
+        public void takeCoins(int coinsTaken)
+        {
+            currentCoins = PlayerPrefs.GetInt("monedas", 0);
+            currentCoins -= coinsTaken;
+            PlayerPrefs.SetInt("monedas", currentCoins);
+        }
+    
+
+    #endregion
+
+    #region Scene Management Methods
+
+        public void playGame()
+        {
+            SceneManager.LoadScene("GameplayScene");
+            PlayerPrefs.SetInt("Counter", currentCounter + 1);
+            Debug.Log(currentCounter);
+        }
+        
+        public void mainMenu()
+        {
+            SceneManager.LoadScene("MenuScene");
+        }
+
+        public void adScene()
+        {
+            SceneManager.LoadScene("AdScene");
+        }
+        
+        public void shopScene()
+        {
+            SceneManager.LoadScene("ShopScene");
+        }
+
+    #endregion
 }

@@ -8,24 +8,28 @@ using SimpleInputNamespace;
 
 public class CharacterController : MonoBehaviour
 {
+    [Header("Componentes")]
     Rigidbody2D body; 
     Animator animator;
     public Scrollbar castBar, healthBar; //Variables de las scrollbars del canvas
     public GameObject[] AttackColliders; //Array de Game Objects correspondientes a los colliders de ataque
     public Dpad dpad;
 
+    [Header("Variables de manejo de Axes")]
     float horizontal;
     float vertical;
-    float lastHorizontal;
-    float lastVertical = -1f;
+    public float lastHorizontal;
+    public float lastVertical;
 
+    
     public float attackDistance;
     private Vector2 lastMovementInput;
     private KeyCode lastKeyInput;
     KeyCode[] keys = new KeyCode[] { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W, KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.RightArrow, KeyCode.LeftArrow };
 
-    public float runSpeed;
-    public float cooldownState; //Cooldown de cambio de estado, evita spammeo
+    [Header("Variables stats del pj")]
+    float runSpeed;
+    float cooldownState; //Cooldown de cambio de estado, evita spammeo
     private float cooldownStateValue; //Representa el valor actual de cooldown
     public float attackColliderTime = .1f; //Lo que dura un collider de ataque
     public float cooldownAttack; //Cooldown de ataque, evita spammeo
@@ -35,7 +39,7 @@ public class CharacterController : MonoBehaviour
 
     public float dmgLandEnemy;
 
-    public float maxHealth = 100f;
+    float maxHealth;
     public float HP;
 
     // Array de estados
@@ -57,6 +61,8 @@ public class CharacterController : MonoBehaviour
     void Start()
     {
         maxHealth = PlayerPrefs.GetFloat("Health", 0);
+        cooldownState = PlayerPrefs.GetFloat("Cooldown", 0);
+        runSpeed = PlayerPrefs.GetFloat("Speed", 0);
         body = GetComponent<Rigidbody2D>(); //Asigno el Rigidbody2D
         animator = GetComponent<Animator>(); //Asigno el animator
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -79,10 +85,12 @@ public class CharacterController : MonoBehaviour
         if(dPadValueX != 0)
         {
             lastHorizontal = dPadValueX;
+            lastVertical = 0;
         }
         if(dPadValueY != 0)
         {
             lastVertical = dPadValueY;
+            lastHorizontal = 0;
         }
 
         //Gestor del cooldown de cambio de estado y de la barra del canvas

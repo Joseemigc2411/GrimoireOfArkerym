@@ -10,7 +10,7 @@ public class PhantomController : MonoBehaviour
     private Transform playerTransform;
     private Animator animator;
     private CharacterController player;
-    private CoinManager CoinManager;
+    private GameManager CoinManager;
     int HP = 1, actualSpellEnemy;
     
     public float speed;
@@ -24,7 +24,7 @@ public class PhantomController : MonoBehaviour
             animator = GetComponent<Animator>();
             player = GameObject.FindWithTag("Player").GetComponent<CharacterController>();
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-            CoinManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<CoinManager>();
+            CoinManager = GameObject.FindGameObjectWithTag("Manager").GetComponent<GameManager>();
             
         #endregion
         
