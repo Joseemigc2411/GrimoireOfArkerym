@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     
     public TextMeshProUGUI currentCoinsText;
     public bool firstGame = false;
-    private int counter , currentCounter;
+    private int currentCounter;
     
     
    
@@ -68,9 +68,18 @@ public class GameManager : MonoBehaviour
 
         public void playGame()
         {
-            SceneManager.LoadScene("GameplayScene");
-            PlayerPrefs.SetInt("Counter", currentCounter + 1);
-            Debug.Log(currentCounter);
+            if (PlayerPrefs.GetInt("Counter", 0) == 4)
+            {
+                PlayerPrefs.SetInt("Counter", 0);
+                adScene();
+                  
+            }
+            else
+            {
+                SceneManager.LoadScene("GameplayScene");
+                adCounter(1);
+            }
+
         }
         
         public void mainMenu()
@@ -87,6 +96,14 @@ public class GameManager : MonoBehaviour
         public void shopScene()
         {
             SceneManager.LoadScene("ShopScene");
+        }
+        
+        public void adCounter(int counterSum)
+        {
+            currentCounter = PlayerPrefs.GetInt("Counter", 0);
+            currentCounter += counterSum;
+            PlayerPrefs.SetInt("Counter", currentCounter);
+            Debug.Log(PlayerPrefs.GetInt("Counter", 0));
         }
 
     #endregion

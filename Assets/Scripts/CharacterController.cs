@@ -194,7 +194,7 @@ public class CharacterController : MonoBehaviour
         if (collision.gameObject.CompareTag("LandEnemy"))
         {
             TakeDamage();
-            Blink();
+            
         }
     }
     
@@ -290,7 +290,7 @@ public class CharacterController : MonoBehaviour
     public void TakeDamage()
     {
         HP -= 50;
-
+        Blink();
         Debug.Log("Daño recibido");
         
     }
