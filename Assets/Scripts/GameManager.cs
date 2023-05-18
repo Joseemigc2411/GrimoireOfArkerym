@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private int currentCoins = 0;
+    private int currentCoins;
     public float playerMaxHP = 100, runSpeed = 1f, cooldown = 0.5f;
     
     public TextMeshProUGUI currentCoinsText;
@@ -76,6 +76,7 @@ public class GameManager : MonoBehaviour
         public void mainMenu()
         {
             SceneManager.LoadScene("MenuScene");
+            Time.timeScale = 1;
         }
 
         public void adScene()
